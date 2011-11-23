@@ -7,6 +7,10 @@ isa_ok( $client->ua, 'LWP::UserAgent', 'Client successfully built' );
 BEGIN {
     package ClientTest;
     use Moose;
-    with 'WebService::Jenkins::Role::Client';
+    with 'WWW::Foursquare::Role::Client';
+
+    sub client_secret { }
+    sub client_id { }
+
     1;
 }

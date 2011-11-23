@@ -1,4 +1,4 @@
-package WWW::Foursquare::Venues::Role::Client;
+package WWW::Foursquare::Role::Client;
 
 use Moose::Role;
 use LWP::UserAgent;
@@ -37,6 +37,7 @@ sub request {
 
 sub _api_url {
     my $self = shift;
+    my $url  = shift;
 
     return $url . "client_id=" . $self->client_id
         . "&client_secret=" . $self->client_secret;

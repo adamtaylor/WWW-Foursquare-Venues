@@ -24,15 +24,22 @@ has 'venues' => (
 );
 
 method search(
-    Int :$latitude!,
-    Int :$longitude!,
-    String :$query?,
-    Int :$limit? = 10,
-    String :$intent? = "checkin",
+    Int    :$latitude!,
+    Int    :$longitude!,
+    Str    :$query?,
+    Int    :$limit? = 10,
+    Str    :$intent? = "checkin",
+    Int    :$radius?,
+    Str    :$sw?,
+    Str    :$ne?,
+    Str    :$category_id?,
+    Str    :$url?,
+    Str    :$provider_id?,
+    Int    :$linked_id?
 ) {
 
-    ouch 'missing_param', 'You need to at least specify a latlon', %args
-        unless $args{latlon};
+    #ouch 'missing_param', 'You need to at least specify a latlon', %args
+        #unless $args{latlon};
 
 }
 
