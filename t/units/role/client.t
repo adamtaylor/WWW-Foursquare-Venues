@@ -11,6 +11,5 @@ BEGIN {
 
     sub client_secret { }
     sub client_id { }
-
     1;
 }

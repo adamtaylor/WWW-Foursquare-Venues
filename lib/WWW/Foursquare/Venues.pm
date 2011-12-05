@@ -2,6 +2,8 @@
 package WWW::Foursquare::Venues;
 
 use Moose;
+with 'WWW::Foursquare::Role::Client';
+use WWW::Foursquare::Venues::Venue;
 use MooseX::Method::Signatures;
 use Ouch;
 
@@ -21,11 +23,28 @@ has 'venues' => (
     isa => 'ArrayRef[WWW::Foursquare::Venues::Venue]',
     is => 'rw',
     default => sub { [] },
+    traits  => ['Array'],
+    handles => {
+        all_venues    => 'elements',
+        add_venue     => 'push',
+        map_venues    => 'map',
+        filter_venues => 'grep',
+        find_venue    => 'first',
+        get_venue     => 'get',
+        join_venues   => 'join',
+        count_venues  => 'count',
+        has_venues    => 'count',
+        has_no_venues => 'is_empty',
+        sorted_venues => 'sort',
+    },
+
 );
 
+my $API_URL = 'https://api.foursquare.com/v2/venues/';
+
 method search(
-    Int    :$latitude!,
-    Int    :$longitude!,
+    Num    :$latitude!,
+    Num    :$longitude!,
     Str    :$query?,
     Int    :$limit? = 10,
     Str    :$intent? = "checkin",
@@ -38,9 +57,14 @@ method search(
     Int    :$linked_id?
 ) {
 
-    #ouch 'missing_param', 'You need to at least specify a latlon', %args
-        #unless $args{latlon};
+    my $resp = $self->request( $API_URL . "search?ll=${latitude},${longitude}" );
 
+    my $venues = $resp->{response}->{venues};
+    for my $venue ( @{$venues} ) {
+        $self->add_venue(
+            WWW::Foursquare::Venues::Venue->new_from_data( data => $venue )
+        );
+    }
 }
 
 sub trending {
@@ -51,9 +75,9 @@ sub explore {
     my ( $self, %args ) = @_;
 }
 
-sub get_venue {
-    my ( $self, %args ) = @_;
-}
+#sub get_venue {
+    #my ( $self, %args ) = @_;
+#}
 
 sub categories {
     my ( $self, %args ) = @_;
