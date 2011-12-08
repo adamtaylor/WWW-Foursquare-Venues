@@ -1,9 +1,11 @@
 #!perl
 
-use Test::More tests => 4;
+use Test::More tests => 3;
 use Test::Exception;
 
 use WWW::Foursquare::Venues;
+# Don't make real API requests in tests
+local *WWW::Foursquare::Venues::request = sub { return { venues => [] } };
 
 my $fs = new_ok(
     WWW::Foursquare::Venues => [{ client_secret => 'foo', client_id => 'bar' }]
